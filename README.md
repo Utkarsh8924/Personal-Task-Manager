@@ -4,7 +4,6 @@ A full-stack task management application built as part of the Studio Graphene Fr
 
 The app allows a single user to create, view, update, and delete personal tasks without authentication. Tasks support titles, optional descriptions, and due dates. Users can filter tasks by status (**All**, **Active**, **Completed**), while overdue tasks are visually highlighted. All task data is persisted to a JSON file on the server, ensuring tasks remain available after server restarts.
 
-> **Note:** This project is not deployed and runs locally only.
 
 ---
 
@@ -53,7 +52,7 @@ The app allows a single user to create, view, update, and delete personal tasks 
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Utkarsh8924/Personal-Task-Manager
 cd task-manager
 ```
 
