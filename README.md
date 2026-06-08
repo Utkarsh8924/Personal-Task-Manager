@@ -1,44 +1,128 @@
-# Personal-Task-Manager
-A full-stack task management application built as part of the Studio Graphene front-end engineering assessment. The app allows a single user to create, view, update, and delete personal tasks — no authentication required. Tasks support titles, optional descriptions, and due dates, and can be filtered by status (All / Active / Completed). Overdue tasks are visually highlighted, and all data is persisted to a JSON file on the server so tasks survive restarts.
+# Personal Task Manager
 
+A full-stack task management application built as part of the Studio Graphene Front-End Engineering Assessment.
 
-Not deployed — runs locally only. See "How to Run Locally" below.
+The app allows a single user to create, view, update, and delete personal tasks without authentication. Tasks support titles, optional descriptions, and due dates. Users can filter tasks by status (**All**, **Active**, **Completed**), while overdue tasks are visually highlighted. All task data is persisted to a JSON file on the server, ensuring tasks remain available after server restarts.
 
+> **Note:** This project is not deployed and runs locally only.
 
-Tech Stack
-Frontend
-ToolWhyReact 18Component-based UI, fast re-renders, industry standardViteInstant dev server, zero-config HMR, much faster than CRAAxiosCleaner API calls than native fetch, automatic JSON parsingCSS VariablesTheming and consistent design tokens without a CSS framework
-Backend
-ToolWhyNode.js + ExpressMinimal setup, easy REST API, great ecosystemUUIDGenerates unique IDs for tasks without a databaseCORSAllows the React frontend (port 5173) to talk to the API (port 5000)fs (built-in)Reads and writes tasks.json for persistence — no database setup needed
+---
 
-How to Run Locally
+## Features
 
-Prerequisites: Node.js installed (v18 or higher). Nothing else needed.
+* Create, edit, and delete tasks
+* Mark tasks as completed or active
+* Filter tasks by status
+* Optional task descriptions and due dates
+* Visual highlighting for overdue tasks
+* Persistent storage using a JSON file
+* Responsive and clean user interface
+* No authentication required
 
-1. Clone the repository
-bashgit clone <your-repo-url>
+---
+
+## Tech Stack
+
+### Frontend
+
+| Tool          | Purpose                                            |
+| ------------- | -------------------------------------------------- |
+| React 18      | Component-based UI with efficient re-rendering     |
+| Vite          | Fast development server with instant HMR           |
+| Axios         | Simplified API requests and automatic JSON parsing |
+| CSS Variables | Consistent theming and design tokens               |
+
+### Backend
+
+| Tool         | Purpose                                   |
+| ------------ | ----------------------------------------- |
+| Node.js      | JavaScript runtime                        |
+| Express      | Lightweight REST API framework            |
+| UUID         | Unique task ID generation                 |
+| CORS         | Enables frontend-backend communication    |
+| fs (Node.js) | File-based persistence using `tasks.json` |
+
+---
+
+## How to Run Locally
+
+### Prerequisites
+
+* Node.js v18 or higher
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
 cd task-manager
-2. Start the backend
-bashcd server
+```
+
+### 2. Start the Backend
+
+```bash
+cd server
 npm install
 npm run dev
-Server runs at: http://localhost:5000
-3. Start the frontend (open a new terminal tab)
-bashcd client
+```
+
+Backend runs at:
+
+```text
+http://localhost:5000
+```
+
+### 3. Start the Frontend
+
+Open a new terminal window:
+
+```bash
+cd client
 npm install
 npm run dev
-App runs at: http://localhost:5173
-Open http://localhost:5173 in your browser. Both terminals must stay running.
+```
 
-API Documentation
-Base URL: http://localhost:5000/api
-All request and response bodies are JSON.
+Frontend runs at:
 
-GET /tasks
+```text
+http://localhost:5173
+```
+
+Open the application in your browser:
+
+```text
+http://localhost:5173
+```
+
+Both frontend and backend terminals must remain running while using the application.
+
+---
+
+## API Documentation
+
+### Base URL
+
+```text
+http://localhost:5000/api
+```
+
+All requests and responses use JSON.
+
+---
+
+### GET /tasks
+
 Fetch all tasks.
-Request body: none
-Response:
-json[
+
+#### Request
+
+```http
+GET /api/tasks
+```
+
+#### Response
+
+```json
+[
   {
     "id": "uuid",
     "title": "Learn React",
@@ -48,20 +132,38 @@ json[
     "createdAt": "2026-06-08T10:00:00.000Z"
   }
 ]
+```
 
-POST /tasks
+---
+
+### POST /tasks
+
 Create a new task.
-Request body:
-json{
+
+#### Request
+
+```http
+POST /api/tasks
+```
+
+```json
+{
   "title": "Learn React",
   "description": "Practice hooks and state",
   "dueDate": "2026-06-15"
 }
+```
 
-title is required. description and dueDate are optional.
+**Validation**
 
-Response: 201 Created — the newly created task object.
-json{
+* `title` is required
+* `description` is optional
+* `dueDate` is optional
+
+#### Response
+
+```json
+{
   "id": "uuid",
   "title": "Learn React",
   "description": "Practice hooks and state",
@@ -69,58 +171,136 @@ json{
   "completed": false,
   "createdAt": "2026-06-08T10:00:00.000Z"
 }
+```
 
-PUT /tasks/:id
-Update a task's title, description, or due date.
-URL param: id — the task's UUID
-Request body:
-json{
+---
+
+### PUT /tasks/:id
+
+Update an existing task.
+
+#### Request
+
+```http
+PUT /api/tasks/:id
+```
+
+```json
+{
   "title": "Updated title",
   "description": "Updated description",
   "dueDate": "2026-07-01"
 }
-Response: 200 OK — the updated task object.
+```
 
-PATCH /tasks/:id/toggle
-Toggle a task's completed status between true and false.
-URL param: id — the task's UUID
-Request body: none
-Response: 200 OK — the updated task object with the new completed value.
+#### Response
 
-DELETE /tasks/:id
+```json
+{
+  "id": "uuid",
+  "title": "Updated title",
+  "description": "Updated description",
+  "dueDate": "2026-07-01",
+  "completed": false,
+  "createdAt": "2026-06-08T10:00:00.000Z"
+}
+```
+
+---
+
+### PATCH /tasks/:id/toggle
+
+Toggle a task's completion status.
+
+#### Request
+
+```http
+PATCH /api/tasks/:id/toggle
+```
+
+#### Response
+
+```json
+{
+  "id": "uuid",
+  "title": "Learn React",
+  "description": "Practice hooks and state",
+  "dueDate": "2026-06-15",
+  "completed": true,
+  "createdAt": "2026-06-08T10:00:00.000Z"
+}
+```
+
+---
+
+### DELETE /tasks/:id
+
 Delete a task permanently.
-URL param: id — the task's UUID
-Request body: none
-Response:
-json{ "message": "Deleted" }
 
-Project Structure
+#### Request
+
+```http
+DELETE /api/tasks/:id
+```
+
+#### Response
+
+```json
+{
+  "message": "Deleted"
+}
+```
+
+---
+
+## Project Structure
+
+```text
 task-manager/
 │
-├── client/                   # React frontend (Vite)
+├── client/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── TaskForm.jsx  # Add / edit task form
-│   │   │   ├── TaskList.jsx  # Renders the list of tasks
-│   │   │   ├── TaskItem.jsx  # Single task card with actions
-│   │   │   ├── FilterBar.jsx # All / Active / Completed tabs
-│   │   │   └── Stats.jsx     # Active vs completed count pills
+│   │   │   ├── TaskForm.jsx
+│   │   │   ├── TaskList.jsx
+│   │   │   ├── TaskItem.jsx
+│   │   │   ├── FilterBar.jsx
+│   │   │   └── Stats.jsx
+│   │   │
 │   │   ├── services/
-│   │   │   └── api.js        # Axios instance + API call functions
-│   │   ├── App.jsx           # Root component, state, handlers
-│   │   ├── App.css           # All styles (CSS variables, dark theme)
-│   │   └── main.jsx          # React DOM entry point
+│   │   │   └── api.js
+│   │   │
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   │
 │   ├── index.html
 │   ├── vite.config.js
 │   └── package.json
 │
-├── server/                   # Express backend
+├── server/
 │   ├── routes/
-│   │   └── taskRoutes.js     # All /api/tasks route handlers
+│   │   └── taskRoutes.js
 │   ├── data/
-│   │   └── tasks.json        # Flat-file persistence (auto-created)
-│   ├── server.js             # Express app setup, middleware, port
+│   │   └── tasks.json
+│   ├── server.js
 │   └── package.json
 │
 └── README.md
+```
+
+---
+
+## Design Decisions
+
+* **No database dependency**: Task data is stored in a JSON file for simplicity and portability.
+* **RESTful API design**: Clear endpoints for CRUD operations.
+* **Component-based architecture**: React components are separated by responsibility for maintainability.
+* **Client-side filtering**: Improves responsiveness without additional API calls.
+* **Persistent storage**: Tasks remain available across server restarts.
+
+---
+
+
+
